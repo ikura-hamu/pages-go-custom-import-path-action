@@ -2,17 +2,35 @@
 
 import commonjs from '@rollup/plugin-commonjs'
 import nodeResolve from '@rollup/plugin-node-resolve'
+import json from '@rollup/plugin-json'
 import typescript from '@rollup/plugin-typescript'
 
-const config = {
-  input: 'src/index.ts',
-  output: {
-    esModule: true,
-    file: 'dist/index.js',
-    format: 'es',
-    sourcemap: true
+const config = [
+  {
+    input: 'src/index.ts',
+    output: {
+      esModule: true,
+      file: 'dist/index.js',
+      format: 'es',
+      sourcemap: true
+    },
+    plugins: [typescript(), nodeResolve({ preferBuiltins: true }), commonjs()]
   },
-  plugins: [typescript(), nodeResolve({ preferBuiltins: true }), commonjs()]
-}
+  {
+    input: 'src/pages/index.ts',
+    output: {
+      esModule: true,
+      file: 'dist/pages/index.js',
+      format: 'es',
+      sourcemap: true
+    },
+    plugins: [
+      typescript(),
+      nodeResolve({ preferBuiltins: true }),
+      commonjs(),
+      json()
+    ]
+  }
+]
 
 export default config

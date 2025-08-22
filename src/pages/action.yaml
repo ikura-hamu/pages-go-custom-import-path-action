@@ -1,0 +1,14 @@
+name: Update documents
+description: |
+  Update HTML documents in the repository which describe Go custom import path, and publish them to GitHub Pages.
+runs:
+  using: node24
+  main: dist/pages/index.ts
+author: ikura-hamu
+inputs:
+  pages_dir:
+    default: '.'
+    description: Directory containing HTML documents.
+  payload:
+    description: JSON payload to update the documents.
+    required: true
