@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import { makeImportSuffix, validatePayload, pathUrlToPath } from './content.js'
 import { ActionsInputReader, InputReader, loadOptions } from './options.js'
 import { FileSystemWriter, NodeFileSystemWriter, saveFile } from './page.js'
+import { updateRepo } from './git.js'
 
 /**
  * The main function for the action.
@@ -45,6 +46,8 @@ export async function run(
       saveFile(payload, options, importPrefixPath, importSuffix, fsSystemWriter)
       core.debug(`Generated HTML file for import path: ${importSuffix}`)
     })
+
+    await updateRepo(options, payload)
   } catch (error) {
     core.error(`Action failed: ${error}`)
     // Fail the workflow run if an error occurs

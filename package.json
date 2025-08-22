@@ -38,6 +38,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.11.1",
+    "@octokit/action": "^8.0.2",
     "@types/jsdom": "^21.1.7",
     "jsdom": "^26.1.0",
     "simple-git": "^3.28.0",

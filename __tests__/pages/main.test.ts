@@ -7,6 +7,12 @@ import * as core from '../../__fixtures__/core.js'
 // Mock the dependencies
 jest.unstable_mockModule('@actions/core', () => core)
 
+// Mock the git module to avoid Octokit initialization issues in tests
+const mockUpdateRepo = jest.fn()
+jest.unstable_mockModule('../../src/pages/git.js', () => ({
+  updateRepo: mockUpdateRepo
+}))
+
 // Import types for testing
 import type { InputReader } from '../../src/pages/options.js'
 import type { FileSystemWriter } from '../../src/pages/page.js'
@@ -55,6 +61,9 @@ describe('pages/main.ts', () => {
 
     // Set default input values
     mockInputReader.setInput('pages_dir', '.')
+
+    // Reset the mock function
+    mockUpdateRepo.mockReset()
   })
 
   afterEach(() => {
