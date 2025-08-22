@@ -1,4 +1,4 @@
-name: Update documents
+name: Update redirect files
 description: |
   Update HTML documents in the repository which describe Go import path redirect, and publish them to GitHub Pages.
 runs:
