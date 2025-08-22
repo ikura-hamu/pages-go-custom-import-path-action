@@ -9,6 +9,7 @@ allowed:
   - bsd-3-clause
   - isc
   - mit
+  - mit-0
   - cc0-1.0
   - other
 
