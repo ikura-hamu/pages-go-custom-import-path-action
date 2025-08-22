@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import { makeImportSuffix, validatePayload } from './content.js'
+import { makeImportSuffix, validatePayload, pathUrlToPath } from './content.js'
 import { ActionsInputReader, InputReader, loadOptions } from './options.js'
 import { FileSystemWriter, NodeFileSystemWriter, saveFile } from './page.js'
 
@@ -36,16 +36,13 @@ export async function run(
     // Generate import suffixes
     const importSuffixList = makeImportSuffix(payload.goModInfo)
 
-    if (importSuffixList.length === 0) {
-      core.debug('No import suffixes found that match the module path')
-      return
-    }
+    const importPrefixPath = pathUrlToPath(payload.goModInfo.Module.Path)
 
-    saveFile(payload, options, '', fsSystemWriter)
+    saveFile(payload, options, importPrefixPath, '', fsSystemWriter)
 
     // Save files for each import suffix
     importSuffixList.forEach((importSuffix) => {
-      saveFile(payload, options, importSuffix, fsSystemWriter)
+      saveFile(payload, options, importPrefixPath, importSuffix, fsSystemWriter)
       core.debug(`Generated HTML file for import path: ${importSuffix}`)
     })
   } catch (error) {

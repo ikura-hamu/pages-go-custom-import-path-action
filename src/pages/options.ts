@@ -2,7 +2,8 @@ import * as core from '@actions/core'
 import { z } from 'zod'
 
 const OptionsSchema = z.object({
-  pagesDir: z.string().min(1).trim().default('.')
+  pagesDir: z.string().min(1).trim().default('.'),
+  changeType: z.enum(['commit', 'pr']).default('commit')
 })
 
 export type Options = z.infer<typeof OptionsSchema>
@@ -46,7 +47,8 @@ export function loadOptions(
   inputReader: InputReader = new ActionsInputReader()
 ): Options {
   const rawOptions = {
-    pagesDir: inputReader.getInput('pages_dir') || '.'
+    pagesDir: inputReader.getInput('pages_dir') || '.',
+    changeType: inputReader.getInput('change_type') || 'commit'
   }
 
   return validateOptions(rawOptions)

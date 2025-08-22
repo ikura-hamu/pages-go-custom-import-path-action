@@ -63,7 +63,7 @@ function checkPrefixUrl(targetPathStr: string, prefixPathStr: string): boolean {
   const normalizedTargetUrlPath = path.normalize(targetUrl.pathname)
   const normalizedPrefixUrlPath = path.normalize(prefixUrl.pathname)
 
-  if (normalizedPrefixUrlPath === '') {
+  if (normalizedPrefixUrlPath === '/') {
     // Normalize URLs by removing trailing slashes
     // If prefix is empty, URL is always under it
     return true
@@ -74,4 +74,9 @@ function checkPrefixUrl(targetPathStr: string, prefixPathStr: string): boolean {
     normalizedTargetUrlPath === normalizedPrefixUrlPath ||
     normalizedTargetUrlPath.startsWith(normalizedPrefixUrlPath + '/')
   )
+}
+
+// example.com/abc/def -> /abc/def
+export function pathUrlToPath(modPath: string): string {
+  return URL.parse('http://' + modPath)?.pathname || ''
 }

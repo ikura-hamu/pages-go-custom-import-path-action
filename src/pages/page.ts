@@ -118,10 +118,13 @@ export function generateTemplate(config: TemplateConfig): JSDOM {
  */
 export function generateFilePaths(
   options: Options,
+  importPrefixPath: string,
   importSuffix: string
 ): { directoryPath: string; filePath: string } {
-  const directoryPath = path.join(options.pagesDir, importSuffix)
-  const filePath = path.join(directoryPath, 'index.html')
+  const directoryPath = path
+    .join('.', options.pagesDir, importPrefixPath, importSuffix)
+    .normalize()
+  const filePath = path.join(directoryPath, 'index.html').normalize()
 
   return { directoryPath, filePath }
 }
@@ -136,10 +139,15 @@ export function generateFilePaths(
 export function saveFile(
   payload: Payload,
   options: Options,
+  importPrefixPath: string,
   importSuffix: string,
   fileSystemWriter: FileSystemWriter = new NodeFileSystemWriter()
 ): void {
-  const { directoryPath, filePath } = generateFilePaths(options, importSuffix)
+  const { directoryPath, filePath } = generateFilePaths(
+    options,
+    importPrefixPath,
+    importSuffix
+  )
 
   // Create directory recursively if it doesn't exist
   fileSystemWriter.createDirectory(directoryPath)

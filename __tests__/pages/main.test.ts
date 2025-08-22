@@ -68,11 +68,11 @@ describe('pages/main.ts', () => {
       repoName: 'test-repo',
       goModInfo: {
         Module: {
-          Path: 'example.com/test-owner/test-repo'
+          Path: 'example.com/mod'
         },
         Imports: [
-          'example.com/test-owner/test-repo/pkg/auth',
-          'example.com/test-owner/test-repo/internal/db',
+          'example.com/mod/pkg/auth',
+          'example.com/mod/internal/db',
           'example.com/other/library'
         ]
       }
@@ -90,18 +90,20 @@ describe('pages/main.ts', () => {
 
     // Verify that files were written
     expect(mockFileSystemWriter.writtenFiles.size).toBe(3) // Root + 2 suffixes
-    expect(mockFileSystemWriter.writtenFiles.has('index.html')).toBe(true)
-    expect(mockFileSystemWriter.writtenFiles.has('pkg/auth/index.html')).toBe(
-      true
-    )
+    expect(mockFileSystemWriter.writtenFiles.has('mod/index.html')).toBe(true)
     expect(
-      mockFileSystemWriter.writtenFiles.has('internal/db/index.html')
+      mockFileSystemWriter.writtenFiles.has('mod/pkg/auth/index.html')
+    ).toBe(true)
+    expect(
+      mockFileSystemWriter.writtenFiles.has('mod/internal/db/index.html')
     ).toBe(true)
 
     // Verify that directories were created
-    expect(mockFileSystemWriter.createdDirectories.has('.')).toBe(true)
-    expect(mockFileSystemWriter.createdDirectories.has('pkg/auth')).toBe(true)
-    expect(mockFileSystemWriter.createdDirectories.has('internal/db')).toBe(
+    expect(mockFileSystemWriter.createdDirectories.has('mod')).toBe(true)
+    expect(mockFileSystemWriter.createdDirectories.has('mod/pkg/auth')).toBe(
+      true
+    )
+    expect(mockFileSystemWriter.createdDirectories.has('mod/internal/db')).toBe(
       true
     )
 
@@ -109,13 +111,13 @@ describe('pages/main.ts', () => {
     expect(core.setFailed).not.toHaveBeenCalled()
   })
 
-  it('handles no matching import suffixes gracefully', async () => {
+  it('handles no matching import suffixes', async () => {
     const payload = {
       owner: 'test-owner',
       repoName: 'test-repo',
       goModInfo: {
         Module: {
-          Path: 'example.com/test-owner/test-repo'
+          Path: 'example.com/mod'
         },
         Imports: ['example.com/other/library', 'golang.org/x/crypto']
       }
@@ -132,10 +134,8 @@ describe('pages/main.ts', () => {
     await run(mockInputReader, mockFileSystemWriter)
 
     // Verify that no files were written (function returns early)
-    expect(mockFileSystemWriter.writtenFiles.size).toBe(0)
-
-    // Verify that setFailed was not called
-    expect(core.setFailed).not.toHaveBeenCalled()
+    expect(mockFileSystemWriter.writtenFiles.has('mod/index.html')).toBe(true)
+    expect(mockFileSystemWriter.createdDirectories.has('mod')).toBe(true)
   })
 
   it('sets failed status for invalid JSON payload', async () => {
@@ -204,9 +204,9 @@ describe('pages/main.ts', () => {
       repoName: 'test-repo',
       goModInfo: {
         Module: {
-          Path: 'github.com/test-owner/test-repo'
+          Path: 'example.com/mod'
         },
-        Imports: ['github.com/test-owner/test-repo/pkg/auth']
+        Imports: ['example.com/mod/pkg/auth']
       }
     }
 
@@ -225,18 +225,20 @@ describe('pages/main.ts', () => {
 
     // Verify that files were written to custom directory
     expect(
-      mockFileSystemWriter.writtenFiles.has('custom-pages/index.html')
+      mockFileSystemWriter.writtenFiles.has('custom-pages/mod/index.html')
     ).toBe(true)
     expect(
-      mockFileSystemWriter.writtenFiles.has('custom-pages/pkg/auth/index.html')
+      mockFileSystemWriter.writtenFiles.has(
+        'custom-pages/mod/pkg/auth/index.html'
+      )
     ).toBe(true)
 
     // Verify that custom directories were created
-    expect(mockFileSystemWriter.createdDirectories.has('custom-pages')).toBe(
-      true
-    )
     expect(
-      mockFileSystemWriter.createdDirectories.has('custom-pages/pkg/auth')
+      mockFileSystemWriter.createdDirectories.has('custom-pages/mod')
+    ).toBe(true)
+    expect(
+      mockFileSystemWriter.createdDirectories.has('custom-pages/mod/pkg/auth')
     ).toBe(true)
 
     // Verify success
@@ -249,9 +251,9 @@ describe('pages/main.ts', () => {
       repoName: 'test-repo',
       goModInfo: {
         Module: {
-          Path: 'github.com/test-owner/test-repo'
+          Path: 'example.com/mod'
         },
-        Imports: ['github.com/test-owner/test-repo/pkg/auth']
+        Imports: ['example.com/mod/pkg/auth']
       }
     }
 
@@ -275,5 +277,43 @@ describe('pages/main.ts', () => {
 
     // Verify that setFailed was called with the file system error
     expect(core.setFailed).toHaveBeenCalledWith('Permission denied')
+  })
+
+  it('import prefix is only domain part', async () => {
+    const payload = {
+      owner: 'test-owner',
+      repoName: 'test-repo',
+      goModInfo: {
+        Module: {
+          Path: 'example.com'
+        },
+        Imports: ['example.com/mod/pkg/auth']
+      }
+    }
+
+    // Mock core.getInput to return the payload
+    core.getInput.mockImplementation((name: string) => {
+      if (name === 'payload') {
+        return JSON.stringify(payload)
+      }
+      return ''
+    })
+
+    await run(mockInputReader, mockFileSystemWriter)
+
+    // Verify that files were written to custom directory
+    expect(mockFileSystemWriter.writtenFiles.has('index.html')).toBe(true)
+    expect(
+      mockFileSystemWriter.writtenFiles.has('mod/pkg/auth/index.html')
+    ).toBe(true)
+
+    // Verify that custom directories were created
+    expect(mockFileSystemWriter.createdDirectories.has('./')).toBe(true)
+    expect(mockFileSystemWriter.createdDirectories.has('mod/pkg/auth')).toBe(
+      true
+    )
+
+    // Verify success
+    expect(core.setFailed).not.toHaveBeenCalled()
   })
 })
