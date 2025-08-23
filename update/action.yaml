@@ -3,7 +3,7 @@ description: |
   Update HTML documents in the repository which describe Go import path redirect, and publish them to GitHub Pages.
 runs:
   using: node24
-  main: ../dist/update/index.ts
+  main: ../dist/update/index.js
 author: ikura-hamu
 inputs:
   pages_dir:
