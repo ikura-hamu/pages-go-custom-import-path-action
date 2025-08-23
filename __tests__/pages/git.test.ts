@@ -10,9 +10,9 @@ import {
   GitOperations,
   GitHubOperations,
   EnvironmentReader
-} from '../../src/pages/git.js'
-import { Options } from '../../src/pages/options.js'
-import { Payload } from '../../src/pages/content.js'
+} from '../../src/update/git.js'
+import { Options } from '../../src/update/options.js'
+import { Payload } from '../../src/update/content.js'
 
 // Mock implementations for functional testing
 const createMockGitOperations = (

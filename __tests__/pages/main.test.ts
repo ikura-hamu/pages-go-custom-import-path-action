@@ -1,5 +1,5 @@
 /**
- * Unit tests for the action's main functionality, src/pages/main.ts
+ * Unit tests for the action's main functionality, src/update/main.ts
  */
 import { jest } from '@jest/globals'
 import * as core from '../../__fixtures__/core.js'
@@ -9,13 +9,13 @@ jest.unstable_mockModule('@actions/core', () => core)
 
 // Mock the git module to avoid Octokit initialization issues in tests
 const mockUpdateRepo = jest.fn()
-jest.unstable_mockModule('../../src/pages/git.js', () => ({
+jest.unstable_mockModule('../../src/update/git.js', () => ({
   updateRepo: mockUpdateRepo
 }))
 
 // Import types for testing
-import type { InputReader } from '../../src/pages/options.js'
-import type { FileSystemWriter } from '../../src/pages/page.js'
+import type { InputReader } from '../../src/update/options.js'
+import type { FileSystemWriter } from '../../src/update/page.js'
 
 // Mock implementations for testing
 class MockInputReader implements InputReader {
@@ -49,7 +49,7 @@ class MockFileSystemWriter implements FileSystemWriter {
 }
 
 // The module being tested should be imported dynamically
-const { run } = await import('../../src/pages/main.js')
+const { run } = await import('../../src/update/main.js')
 
 describe('pages/main.ts', () => {
   let mockInputReader: MockInputReader

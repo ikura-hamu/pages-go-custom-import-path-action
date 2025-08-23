@@ -1,8 +1,8 @@
 /**
- * Unit tests for the content functionality, src/pages/content.ts
+ * Unit tests for the content functionality, src/update/content.ts
  */
-import { makeImportSuffix } from '../../src/pages/content.js'
-import type { GoModInfo } from '../../src/pages/content.js'
+import { makeImportSuffix } from '../../src/update/content.js'
+import type { GoModInfo } from '../../src/update/content.js'
 
 describe('content.ts', () => {
   describe('makeImportSuffix', () => {

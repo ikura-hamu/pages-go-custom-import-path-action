@@ -17,10 +17,10 @@ const config = [
     plugins: [typescript(), nodeResolve({ preferBuiltins: true }), commonjs()]
   },
   {
-    input: 'src/pages/index.ts',
+    input: 'src/update/index.ts',
     output: {
       esModule: true,
-      file: 'dist/pages/index.js',
+      file: 'dist/update/index.js',
       format: 'es',
       sourcemap: true
     },

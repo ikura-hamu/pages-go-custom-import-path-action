@@ -1,4 +1,4 @@
-import { generateTemplate, TemplateConfig } from '../../src/pages/page.js'
+import { generateTemplate, TemplateConfig } from '../../src/update/page.js'
 import { JSDOM } from 'jsdom'
 
 describe('generateTemplate', () => {
