@@ -1,14 +1,6 @@
 import { z } from 'zod'
 import path from 'path'
-
-const GoModInfoSchema = z.object({
-  Module: z.object({
-    Path: z.string().min(1)
-  }),
-  Imports: z.array(z.string().min(1))
-})
-
-export type GoModInfo = z.infer<typeof GoModInfoSchema>
+import { GoModInfo, GoModInfoSchema } from '../go/mod.js'
 
 const PayloadSchema = z.object({
   owner: z.string().min(1),
