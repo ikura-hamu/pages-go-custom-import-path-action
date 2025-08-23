@@ -3,17 +3,17 @@ description: |
   Update HTML documents in the repository which describe Go import path redirect, and publish them to GitHub Pages.
 runs:
   using: node24
-  main: dist/update/index.ts
+  main: ../dist/update/index.ts
 author: ikura-hamu
 inputs:
   pages_dir:
-    default: '.'
+    default: "."
     description: Directory containing HTML documents.
   payload:
     description: JSON payload to update the documents.
     required: true
   change_type:
-    default: 'commit'
+    default: "commit"
     description: |
       Type of change to make (`commit` | `pr`).
       If `pr`, create a new branch and a pull request will be created.
