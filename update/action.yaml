@@ -7,13 +7,13 @@ runs:
 author: ikura-hamu
 inputs:
   pages_dir:
-    default: "."
+    default: '.'
     description: Directory containing HTML documents.
   payload:
     description: JSON payload to update the documents.
     required: true
   change_type:
-    default: "commit"
+    default: 'commit'
     description: |
       Type of change to make (`commit` | `pr`).
       If `pr`, create a new branch and a pull request will be created.
