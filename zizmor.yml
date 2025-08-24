@@ -1,0 +1,8 @@
+rules:
+  artipacked:
+    ignore:
+      - ci.yml
+      - check-dist.yml
+      - codeql-analysis.yml
+      - licensed.yml
+      - linter.yml
