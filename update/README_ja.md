@@ -19,16 +19,15 @@
   "repoName": "<repository name>",
   "goModInfo": {
     "Module": {
-      "Path": "<module path>",
+      "Path": "<module path>"
     },
-    "Imports": [
-      "<imported package path>"
-    ]
+    "Imports": ["<imported package path>"]
   }
 }
 ```
 
-`goModInfo` はモジュールのディレクトリで `go list -json=Module,Imports .` を実行したときの出力です。
+`goModInfo` はモジュールのディレクトリで `go list -json=Module,Imports .`
+を実行したときの出力です。
 
 ## 出力
 

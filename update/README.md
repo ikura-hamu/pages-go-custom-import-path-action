@@ -1,6 +1,7 @@
 # `ikura-hamu/go-import-pages/update`
 
-Generates redirect HTML files, saves them to the specified directory, and commits and pushes the changes.
+Generates redirect HTML files, saves them to the specified directory, and
+commits and pushes the changes.
 
 ## Inputs
 
@@ -19,16 +20,15 @@ Generates redirect HTML files, saves them to the specified directory, and commit
   "repoName": "<repository name>",
   "goModInfo": {
     "Module": {
-      "Path": "<module path>",
+      "Path": "<module path>"
     },
-    "Imports": [
-      "<imported package path>"
-    ]
+    "Imports": ["<imported package path>"]
   }
 }
 ```
 
-`goModInfo` is the output when running `go list -json=Module,Imports .` in the module directory.
+`goModInfo` is the output when running `go list -json=Module,Imports .` in the
+module directory.
 
 ## Outputs
 

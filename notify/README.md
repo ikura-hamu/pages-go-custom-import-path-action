@@ -1,6 +1,7 @@
 # `ikura-hamu/go-import-pages/notify`
 
-Notifies changes to Go modules to a repository that manages redirect HTML using Issue comments.
+Notifies changes to Go modules to a repository that manages redirect HTML using
+Issue comments.
 
 ## Inputs
 
