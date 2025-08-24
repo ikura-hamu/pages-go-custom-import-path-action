@@ -18,3 +18,6 @@ inputs:
       Type of change to make (`commit` | `pr`).
       If `pr`, create a new branch and a pull request will be created.
       If `commit`, changes will be committed and pushed to the current branch.
+  github_token:
+    description: GITHUB_TOKEN
+    required: true

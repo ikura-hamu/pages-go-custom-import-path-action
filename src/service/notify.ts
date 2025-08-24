@@ -1,7 +1,7 @@
 import { EnvironmentReader } from '../env/env.js'
 import { GitHubOperations } from '../github/github.js'
 import { GoOperations } from '../go/go.js'
-import { Payload } from '../update/content.js'
+import { Payload } from './update.js'
 
 export type NotificationParams = {
   owner: string

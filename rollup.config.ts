@@ -8,7 +8,7 @@ import typescript from '@rollup/plugin-typescript'
 
 const config = [
   {
-    input: 'src/update/index.ts',
+    input: 'src/update.ts',
     output: {
       esModule: true,
       file: 'dist/update/index.js',

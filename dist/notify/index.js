@@ -34252,9 +34252,33 @@ async function createIssueComment(octokit, params) {
     return;
 }
 
+async function createPullRequest(octokit, params) {
+    await octokit.rest.pulls.create({
+        owner: params.owner,
+        repo: params.repo,
+        title: params.title,
+        head: params.head,
+        base: params.base
+    });
+}
+
+async function getRepository(octokit, owner, repo) {
+    const { data: repository } = await octokit.rest.repos.get({
+        owner,
+        repo
+    });
+    return {
+        owner: repository.owner.login,
+        repo: repository.name,
+        default_branch: repository.default_branch
+    };
+}
+
 function newGitHubOperations(octokit) {
     return {
-        createIssueComment: (params) => createIssueComment(octokit, params)
+        createIssueComment: (params) => createIssueComment(octokit, params),
+        createPullRequest: (params) => createPullRequest(octokit, params),
+        getRepository: (owner, repo) => getRepository(octokit, owner, repo)
     };
 }
 
