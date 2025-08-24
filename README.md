@@ -70,7 +70,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - uses: ikura-hamu/go-import-pages/update@v0.1
+      - uses: ikura-hamu/go-import-pages/update@v0.1.0
         with:
           payload: ${{ github.event.comment.body }}
           pages_dir: 'dist'
@@ -126,7 +126,7 @@ jobs:
         uses: actions/setup-go@v5
 
       - name: Notify
-        uses: ikura-hamu/go-import-pages/notify@v0.1
+        uses: ikura-hamu/go-import-pages/notify@v0.1.0
         with:
           owner: { username }
           repo_name: { html_repo }
