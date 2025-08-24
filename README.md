@@ -1,305 +1,129 @@
-# Create a GitHub Action Using TypeScript
+# go-import-pages
 
-[![GitHub Super-Linter](https://github.com/ikura-hamu/go-import-pages/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
-![CI](https://github.com/ikura-hamu/go-import-pages/actions/workflows/ci.yml/badge.svg)
-[![Check dist/](https://github.com/ikura-hamu/go-import-pages/actions/workflows/check-dist.yml/badge.svg)](https://github.com/ikura-hamu/go-import-pages/actions/workflows/check-dist.yml)
-[![CodeQL](https://github.com/ikura-hamu/go-import-pages/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ikura-hamu/go-import-pages/actions/workflows/codeql-analysis.yml)
-[![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
+[日本語](./README_ja.md)
 
-Use this template to bootstrap the creation of a TypeScript action. :rocket:
+`go-import-pages` provides GitHub Actions to enable custom domain import paths for Go modules by redirecting Go import paths using GitHub Pages.
 
-This template includes compilation support, tests, a validation workflow,
-publishing, and versioning guidance.
+## Provided Actions
 
-If you are new, there's also a simpler introduction in the
-[Hello world JavaScript action repository](https://github.com/actions/hello-world-javascript-action).
+We provide two Actions. Please refer to each README.md for detailed usage instructions.
 
-## Create Your Own Action
+| Action                                        | Description                                                 |
+| --------------------------------------------- | ----------------------------------------------------------- |
+| [ikura-hamu/go-import-pages/notify](./notify) | Notify module changes to the repository managing HTML files |
+| [ikura-hamu/go-import-pages/update](./update) | Update the repository managing HTML files                   |
 
-To create your own action, you can use this repository as a template! Just
-follow the below instructions:
+## How it works
 
-1. Click the **Use this template** button at the top of the repository
-1. Select **Create a new repository**
-1. Select an owner and name for your new repository
-1. Click **Create repository**
-1. Clone your new repository
+Go import paths often use GitHub repository URLs directly, but you can also use custom domains by specifying the repository URL in HTML meta tags to use them as import paths.
 
-> [!IMPORTANT]
->
-> Make sure to remove or update the [`CODEOWNERS`](./CODEOWNERS) file! For
-> details on how to use this file, see
-> [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners).
+Reference: https://pkg.go.dev/cmd/go#hdr-Remote_import_paths
 
-## Initial Setup
+This repository generates HTML files containing these meta tags from Go module information and serves them using GitHub Pages with a custom domain to achieve import paths with arbitrary domains.
 
-After you've cloned the repository to your local machine or codespace, you'll
-need to perform some initial setup steps before you can develop your action.
-
-> [!NOTE]
->
-> You'll need to have a reasonably modern version of
-> [Node.js](https://nodejs.org) handy (20.x or later should work!). If you are
-> using a version manager like [`nodenv`](https://github.com/nodenv/nodenv) or
-> [`fnm`](https://github.com/Schniz/fnm), this template has a `.node-version`
-> file at the root of the repository that can be used to automatically switch to
-> the correct version when you `cd` into the repository. Additionally, this
-> `.node-version` file is used by GitHub Actions in any `actions/setup-node`
-> actions.
-
-1. :hammer_and_wrench: Install the dependencies
-
-   ```bash
-   npm install
-   ```
-
-1. :building_construction: Package the TypeScript for distribution
-
-   ```bash
-   npm run bundle
-   ```
-
-1. :white_check_mark: Run the tests
-
-   ```bash
-   $ npm test
-
-   PASS  ./index.test.js
-     ✓ throws invalid number (3ms)
-     ✓ wait 500 ms (504ms)
-     ✓ test runs (95ms)
-
-   ...
-   ```
-
-## Update the Action Metadata
-
-The [`action.yml`](action.yml) file defines metadata about your action, such as
-input(s) and output(s). For details about this file, see
-[Metadata syntax for GitHub Actions](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions).
-
-When you copy this repository, update `action.yml` with the name, description,
-inputs, and outputs for your action.
-
-## Update the Action Code
-
-The [`src/`](./src/) directory is the heart of your action! This contains the
-source code that will be run when your action is invoked. You can replace the
-contents of this directory with your own code.
-
-There are a few things to keep in mind when writing your action code:
-
-- Most GitHub Actions toolkit and CI/CD operations are processed asynchronously.
-  In `main.ts`, you will see that the action is run in an `async` function.
-
-  ```javascript
-  import * as core from '@actions/core'
-  //...
-
-  async function run() {
-    try {
-      //...
-    } catch (error) {
-      core.setFailed(error.message)
-    }
-  }
-  ```
-
-  For more information about the GitHub Actions toolkit, see the
-  [documentation](https://github.com/actions/toolkit/blob/main/README.md).
-
-So, what are you waiting for? Go ahead and start customizing your action!
-
-1. Create a new branch
-
-   ```bash
-   git checkout -b releases/v1
-   ```
-
-1. Replace the contents of `src/` with your action code
-1. Add tests to `__tests__/` for your source code
-1. Format, test, and build the action
-
-   ```bash
-   npm run all
-   ```
-
-   > This step is important! It will run [`rollup`](https://rollupjs.org/) to
-   > build the final JavaScript action code with all dependencies included. If
-   > you do not run this step, your action will not work correctly when it is
-   > used in a workflow.
-
-1. (Optional) Test your action locally
-
-   The [`@github/local-action`](https://github.com/github/local-action) utility
-   can be used to test your action locally. It is a simple command-line tool
-   that "stubs" (or simulates) the GitHub Actions Toolkit. This way, you can run
-   your TypeScript action locally without having to commit and push your changes
-   to a repository.
-
-   The `local-action` utility can be run in the following ways:
-   - Visual Studio Code Debugger
-
-     Make sure to review and, if needed, update
-     [`.vscode/launch.json`](./.vscode/launch.json)
-
-   - Terminal/Command Prompt
-
-     ```bash
-     # npx @github/local action <action-yaml-path> <entrypoint> <dotenv-file>
-     npx @github/local-action . src/main.ts .env
-     ```
-
-   You can provide a `.env` file to the `local-action` CLI to set environment
-   variables used by the GitHub Actions Toolkit. For example, setting inputs and
-   event payload data used by your action. For more information, see the example
-   file, [`.env.example`](./.env.example), and the
-   [GitHub Actions Documentation](https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables).
-
-1. Commit your changes
-
-   ```bash
-   git add .
-   git commit -m "My first action is ready!"
-   ```
-
-1. Push them to your repository
-
-   ```bash
-   git push -u origin releases/v1
-   ```
-
-1. Create a pull request and get feedback on your action
-1. Merge the pull request into the `main` branch
-
-Your action is now published! :rocket:
-
-For information about versioning your action, see
-[Versioning](https://github.com/actions/toolkit/blob/main/docs/action-versioning.md)
-in the GitHub Actions toolkit.
-
-## Validate the Action
-
-You can now validate the action by referencing it in a workflow file. For
-example, [`ci.yml`](./.github/workflows/ci.yml) demonstrates how to reference an
-action in the same repository.
-
-```yaml
-steps:
-  - name: Checkout
-    id: checkout
-    uses: actions/checkout@v4
-
-  - name: Test Local Action
-    id: test-action
-    uses: ./
-    with:
-      milliseconds: 1000
-
-  - name: Print Output
-    id: output
-    run: echo "${{ steps.test-action.outputs.time }}"
-```
-
-For example workflow runs, check out the
-[Actions tab](https://github.com/ikura-hamu/go-import-pages/actions)! :rocket:
+As an alternative to this repository, there's [rsc.io/go-import-redirector](https://github.com/rsc/go-import-redirector), which is a server application implementation that dynamically serves HTML.
 
 ## Usage
 
-After testing, you can create version tag(s) that developers can use to
-reference different stable versions of your action. For more information, see
-[Versioning](https://github.com/actions/toolkit/blob/main/docs/action-versioning.md)
-in the GitHub Actions toolkit.
+The usage varies depending on how many modules you want to associate with a single domain.
 
-To include the action in a workflow in another repository, you can use the
-`uses` syntax with the `@` symbol to reference a specific branch, tag, or commit
-hash.
+### When associating multiple modules with one domain
+
+For example, when associating multiple modules with one domain like `example.com/mod1` and `example.com/mod2`, you need a separate repository to manage HTML files in addition to the repository managing source code.
+
+Let's assume the repository managing modules is `github.com/{username}/{mod_repo}` and the repository managing HTML is `github.com/{username}/{html_repo}`.
+
+#### Preparing the repository managing HTML
+
+This repository will receive update notifications from the repository managing modules via Issue comments. Please create one empty Issue for this purpose.
+
+In the repository managing HTML, write a workflow like the following:
 
 ```yaml
-steps:
-  - name: Checkout
-    id: checkout
-    uses: actions/checkout@v4
+on:
+  issue_comment:
+    types: [created]
 
-  - name: Test Local Action
-    id: test-action
-    uses: ikura-hamu/go-import-pages@v1 # Commit with the `v1` tag
-    with:
-      milliseconds: 1000
+permissions:
+  contents: write
 
-  - name: Print Output
-    id: output
-    run: echo "${{ steps.test-action.outputs.time }}"
+jobs:
+  jobs:
+  update_repo:
+    if: github.event.issue.number == 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - uses: ikura-hamu/go-import-pages/update@v0.1
+        with:
+          payload: ${{ github.event.comment.body }}
+          pages_dir: "dist"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  pages:
+    runs-on: ubuntu-latest
+    needs: update_repo
+    permissions:
+      pages: write
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "dist"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 ```
 
-## Publishing a New Release
+Specify the issue number in the Job conditions.
 
-This project includes a helper script, [`script/release`](./script/release)
-designed to streamline the process of tagging and pushing new releases for
-GitHub Actions.
+Since this repository uses GitHub Pages to serve HTML, please enable GitHub Pages and specify the domain you want to use.
 
-GitHub Actions allows users to select a specific version of the action to use,
-based on release tags. This script simplifies this process by performing the
-following steps:
+Details: [Configuring a custom domain for your GitHub Pages site](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)
 
-1. **Retrieving the latest release tag:** The script starts by fetching the most
-   recent SemVer release tag of the current branch, by looking at the local data
-   available in your repository.
-1. **Prompting for a new release tag:** The user is then prompted to enter a new
-   release tag. To assist with this, the script displays the tag retrieved in
-   the previous step, and validates the format of the inputted tag (vX.X.X). The
-   user is also reminded to update the version field in package.json.
-1. **Tagging the new release:** The script then tags a new release and syncs the
-   separate major tag (e.g. v1, v2) with the new release tag (e.g. v1.0.0,
-   v2.1.2). When the user is creating a new major release, the script
-   auto-detects this and creates a `releases/v#` branch for the previous major
-   version.
-1. **Pushing changes to remote:** Finally, the script pushes the necessary
-   commits, tags and branches to the remote repository. From here, you will need
-   to create a new release in GitHub so users can easily reference the new tags
-   in their workflows.
+#### Preparing the repository managing modules
 
-## Dependency License Management
+In the repository managing modules, write a workflow like the following:
 
-This template includes a GitHub Actions workflow,
-[`licensed.yml`](./.github/workflows/licensed.yml), that uses
-[Licensed](https://github.com/licensee/licensed) to check for dependencies with
-missing or non-compliant licenses. This workflow is initially disabled. To
-enable the workflow, follow the below steps.
+```yaml
+on:
+  push:
+    branches: [main]
 
-1. Open [`licensed.yml`](./.github/workflows/licensed.yml)
-1. Uncomment the following lines:
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
 
-   ```yaml
-   # pull_request:
-   #   branches:
-   #     - main
-   # push:
-   #   branches:
-   #     - main
-   ```
-
-1. Save and commit the changes
-
-Once complete, this workflow will run any time a pull request is created or
-changes pushed directly to `main`. If the workflow detects any dependencies with
-missing or non-compliant licenses, it will fail the workflow and provide details
-on the issue(s) found.
-
-### Updating Licenses
-
-Whenever you install or update dependencies, you can use the Licensed CLI to
-update the licenses database. To install Licensed, see the project's
-[Readme](https://github.com/licensee/licensed?tab=readme-ov-file#installation).
-
-To update the cached licenses, run the following command:
-
-```bash
-licensed cache
+      - name: Setup Go
+        uses: actions/setup-go@v5
+      
+      - name: Notify
+        uses: ikura-hamu/go-import-pages/notify@v0.1
+        with:
+          owner: {username}
+          repo_name: {html_repo}
+          github_token: ${{ secrets.GH_PAT }}
+          issue_number: 10
 ```
 
-To check the status of cached licenses, run the following command:
+For `github_token`, specify a GitHub Personal Access Token or GitHub App Token with `issues:write` permission for the repository managing HTML.
 
-```bash
-licensed status
-```
+For `issue_number`, specify the number of the Issue created in the repository managing HTML.
+
+### When associating one module with one domain
+
+When associating only one module with a domain like `example.com`, you don't need a separate repository to manage HTML.
+
+Not implemented yet
