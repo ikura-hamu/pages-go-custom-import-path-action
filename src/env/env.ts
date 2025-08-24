@@ -8,6 +8,6 @@ export interface EnvironmentReader {
 /**
  * Default implementation reading from process.env
  */
-export const createProcessEnvironmentReader = (): EnvironmentReader => ({
+export const newProcessEnvironmentReader = (): EnvironmentReader => ({
   getGitHubRepository: () => process.env.GITHUB_REPOSITORY
 })

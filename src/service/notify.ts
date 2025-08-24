@@ -3,7 +3,7 @@ import { GitHubOperations } from '../github/github.js'
 import { GoOperations } from '../go/go.js'
 import { Payload } from '../update/content.js'
 
-type NotificationParams = {
+export type NotificationParams = {
   owner: string
   repoName: string
   notifyIssueNumber: number
