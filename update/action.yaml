@@ -1,6 +1,6 @@
 name: Update redirect files
 description: |
-  Update HTML documents in the repository which describe Go import path redirect, and publish them to GitHub Pages.
+  Update HTML documents in the repository which describe Go import path redirect.
 runs:
   using: node24
   main: ../dist/update/index.js
