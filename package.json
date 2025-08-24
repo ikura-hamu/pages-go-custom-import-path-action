@@ -5,13 +5,13 @@
   "author": "",
   "type": "module",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/ikura-hamu/go-import-pages",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/ikura-hamu/go-import-pages.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/ikura-hamu/go-import-pages/issues"
   },
   "keywords": [
     "actions"
@@ -41,7 +41,6 @@
     "@actions/exec": "^1.1.1",
     "@actions/github": "^6.0.1",
     "@actions/io": "^1.1.3",
-    "@octokit/action": "^8.0.2",
     "@types/jsdom": "^21.1.7",
     "jsdom": "^26.1.0",
     "simple-git": "^3.28.0",
