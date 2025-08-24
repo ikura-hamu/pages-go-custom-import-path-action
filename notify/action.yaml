@@ -1,0 +1,22 @@
+name: Notify module update
+description: |
+  Notify module updated to the other repository which manage redirect HTML files using GitHub issues comments.
+runs:
+  using: node24
+  main: ../dist/notify/index.js
+author: ikura-hamu
+inputs:
+  owner:
+    description: Owner of the repository which manage redirect HTML files.
+    required: true
+  repo_name:
+    description: Name of the repository which manage redirect HTML files.
+    required: true
+  issue_number:
+    description: Issue number to comment on.
+    required: true
+  github_token:
+    description:
+      GitHub App token or personal access token with issues:write scope against
+      the redirect HTML files repository.
+    required: true

@@ -8,16 +8,6 @@ import typescript from '@rollup/plugin-typescript'
 
 const config = [
   {
-    input: 'src/index.ts',
-    output: {
-      esModule: true,
-      file: 'dist/index.js',
-      format: 'es',
-      sourcemap: true
-    },
-    plugins: [typescript(), nodeResolve({ preferBuiltins: true }), commonjs()]
-  },
-  {
     input: 'src/update/index.ts',
     output: {
       esModule: true,
@@ -40,6 +30,16 @@ const config = [
       typescript(),
       json()
     ]
+  },
+  {
+    input: 'src/notify.ts',
+    output: {
+      esModule: true,
+      file: 'dist/notify/index.js',
+      format: 'es',
+      sourcemap: true
+    },
+    plugins: [typescript(), nodeResolve({ preferBuiltins: true }), commonjs()]
   }
 ]
 
